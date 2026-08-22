@@ -66,6 +66,49 @@ export async function updateSpace({
   });
 }
 
+/**
+ * Fill in profile answers the space has never held, leaving any stored answer
+ * untouched. Setup uses this when the account already owns a space: the form
+ * still asked for a type and an industry, so the answers have to land
+ * somewhere, but setup must not overwrite what is already there — the same
+ * rule that stops it renaming an existing space.
+ *
+ * The null check sits in the where clause rather than in a read-then-write, so
+ * two concurrent submits can't both see a blank and race. Returns which fields
+ * were actually filled, so the caller only reports what it really changed.
+ */
+export async function fillSpaceProfile({
+  spaceId,
+  spaceType,
+  industry,
+}: {
+  spaceId: string;
+  spaceType?: SpaceType;
+  industry?: string | null;
+}) {
+  // Each field is guarded independently: a space can carry a type from an
+  // earlier setup while its industry has never been answered.
+  const [spaceTypeResult, industryResult] = await Promise.all([
+    spaceType
+      ? prisma.space.updateMany({
+          where: { id: spaceId, spaceType: null },
+          data: { spaceType },
+        })
+      : undefined,
+    industry
+      ? prisma.space.updateMany({
+          where: { id: spaceId, industry: null },
+          data: { industry },
+        })
+      : undefined,
+  ]);
+
+  return {
+    filledSpaceType: (spaceTypeResult?.count ?? 0) > 0,
+    filledIndustry: (industryResult?.count ?? 0) > 0,
+  };
+}
+
 export async function updateSpaceShowBranding({
   spaceId,
   showBranding,

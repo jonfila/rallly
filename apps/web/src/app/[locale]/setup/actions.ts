@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import * as z from "zod";
 import { adoptOrphanedPolls } from "@/features/poll/mutations";
 import { getOwnedSpace } from "@/features/space/data";
-import { createSpace } from "@/features/space/mutations";
+import { createSpace, fillSpaceProfile } from "@/features/space/mutations";
 import { industrySchema } from "@/features/space/schema";
 import { inferIndustry } from "@/features/space/utils";
 import { jobTitleSchema } from "@/features/user/schema";
@@ -30,8 +30,9 @@ const setupSpaceSchema = z.discriminatedUnion("spaceType", [
  * Creates the user's space at the end of onboarding — registration doesn't
  * create one, so this is where every account gets theirs. Accounts that
  * already own a space (pre-existing accounts sent through setup to backfill
- * profile fields, or a re-submit) only re-persist the job title and retry
- * poll adoption: setup never renames or duplicates an existing space.
+ * profile fields, or a re-submit) keep that space: setup fills in profile
+ * answers it has never held and retries poll adoption, but never renames,
+ * duplicates, or overwrites it.
  */
 export const setupSpaceAction = authActionClient
   .metadata({ actionName: "setup_space" })
@@ -39,6 +40,14 @@ export const setupSpaceAction = authActionClient
   .action(async ({ ctx, parsedInput }) => {
     const jobTitle =
       parsedInput.spaceType === "work" ? parsedInput.jobTitle : undefined;
+
+    const industry =
+      parsedInput.spaceType === "work" ? parsedInput.industry : undefined;
+
+    const organizationName =
+      parsedInput.spaceType === "work"
+        ? parsedInput.organizationName
+        : undefined;
 
     if (jobTitle) {
       // Written before the space, and before the early return below, so a
@@ -57,6 +66,41 @@ export const setupSpaceAction = authActionClient
     const ownedSpace = await getOwnedSpace(ctx.user.id);
 
     if (ownedSpace) {
+      // The form asked for a type and an industry, so the answers have to be
+      // stored even though this space already exists — otherwise the user
+      // answers and the answer is silently dropped. Fills blanks only; a
+      // stored answer always wins.
+      const { filledIndustry } = await fillSpaceProfile({
+        spaceId: ownedSpace.id,
+        spaceType: parsedInput.spaceType,
+        industry,
+      });
+
+      if (filledIndustry && industry) {
+        identifyGroup({
+          distinctId: ctx.user.id,
+          groupType: "space",
+          groupKey: ownedSpace.id,
+          properties: { industry },
+        });
+
+        // Same pair as the create path, so classifier accuracy stays
+        // measurable however the answer arrived.
+        track(ctx.user, {
+          event: "space:industry_set",
+          properties: {
+            inferred_industry: inferIndustry({
+              email: ctx.user.email,
+              organizationName,
+            }),
+            final_industry: industry,
+          },
+          groups: {
+            space: ownedSpace.id,
+          },
+        });
+      }
+
       // Create and adopt aren't atomic: a previous submit may have created
       // the space and failed before adoption, so retries still pull
       // orphaned polls in (a no-op when there are none).
@@ -67,13 +111,7 @@ export const setupSpaceAction = authActionClient
       return;
     }
 
-    const name =
-      parsedInput.spaceType === "work"
-        ? parsedInput.organizationName
-        : "Personal";
-
-    const industry =
-      parsedInput.spaceType === "work" ? parsedInput.industry : undefined;
+    const name = organizationName ?? "Personal";
 
     const space = await createSpace({
       name,
