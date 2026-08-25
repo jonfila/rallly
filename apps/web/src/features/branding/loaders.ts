@@ -2,6 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 import { env } from "@/env";
+import { isSelfHosted } from "@/lib/constants";
 import { getInstanceSettings } from "@/features/instance-settings/data";
 import { loadInstanceLicense } from "@/features/licensing/data";
 import { DEFAULT_PRIMARY_COLOR } from "./constants";
@@ -30,7 +31,7 @@ export const loadBrandingSettings = cache(async () => {
     getPrimaryColorVars(primaryColor).dark;
 
   return {
-    hasWhiteLabelAddon: license?.whiteLabelAddon ?? false,
+    hasWhiteLabelAddon: isSelfHosted || (license?.whiteLabelAddon ?? false),
     appName: db.appName ?? env.APP_NAME,
     primaryColor,
     primaryColorDark,
