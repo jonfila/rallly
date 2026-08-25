@@ -1,6 +1,6 @@
 {
-  "short_name": "Rallly",
-  "name": "Rallly",
+  "short_name": "IAIS Polls",
+  "name": "IAIS Polls",
   "icons": [
     {
       "src": "android-chrome-192x192.png",
@@ -32,5 +32,5 @@
   "scope": "/",
   "display": "standalone",
   "background_color": "#FFFFFF",
-  "theme_color": "#4f46e5"
+  "theme_color": "#2e4e42"
 }
