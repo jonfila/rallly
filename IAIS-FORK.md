@@ -7,7 +7,7 @@ Public License v3.0 or later (see `LICENSE`); this fork is distributed under the
 
 ## Base
 
-Upstream tag `v4.13.0`.
+Upstream tag `v4.13.1`.
 
 ## Changes (2026-08-25)
 
