@@ -41,9 +41,9 @@ export async function isApiAccessEnabled(
     ownerId: string;
   },
 ): Promise<boolean> {
-  // Block self-hosted deployments
+  // IAIS fork: on a self-hosted instance the space owner has API access.
   if (isSelfHosted) {
-    return false;
+    return space.ownerId === user.id;
   }
 
   // Require pro tier
