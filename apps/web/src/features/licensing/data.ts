@@ -65,6 +65,10 @@ export const getUserLimit = async () => {
 };
 
 export const getWhiteLabelAddon = async () => {
+  // IAIS fork: custom branding is always available on a self-hosted instance.
+  if (isSelfHosted) {
+    return true;
+  }
   const license = await loadInstanceLicense();
   return license?.whiteLabelAddon ?? false;
 };

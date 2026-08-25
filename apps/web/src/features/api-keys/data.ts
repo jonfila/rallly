@@ -3,6 +3,7 @@ import "server-only";
 import { prisma } from "@rallly/database";
 import type { SpaceTier } from "@/features/space/schema";
 import type { AuthorizedSpaceId } from "@/features/space/types";
+import { isSelfHosted } from "@/lib/constants";
 import { isFeatureEnabled } from "@/lib/feature-flags/server";
 
 export function getSpaceApiKeys({ spaceId }: { spaceId: AuthorizedSpaceId }) {
@@ -38,6 +39,11 @@ export function isApiAccessEnabled(
     ownerId: string;
   },
 ) {
+  // IAIS fork: on a self-hosted instance the space owner has API access.
+  if (isSelfHosted) {
+    return space.ownerId === user.id;
+  }
+
   if (!isFeatureEnabled("api")) {
     return false;
   }
