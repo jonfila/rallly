@@ -38,5 +38,5 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            APP_VERSION=4.13.1-iais
+            APP_VERSION=4.14.0-iais
             SELF_HOSTED=true
