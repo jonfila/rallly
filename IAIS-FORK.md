@@ -7,7 +7,14 @@ Public License v3.0 or later (see `LICENSE`); this fork is distributed under the
 
 ## Base
 
-Upstream tag `v4.13.1`.
+Upstream tag `v4.14.0`.
+
+Rebased from `v4.13.1` on 2026-09-08 with
+`git rebase --onto v4.14.0 v4.13.1 iais`. A bare `git rebase v4.14.0` does not work here:
+`v4.13.1` was cut on a maintenance branch and is not an ancestor of `v4.14.0`, so a bare rebase
+replays upstream's own commits and conflicts in `pnpm-lock.yaml`. All four fork commits below
+replayed cleanly and every patched file landed intact; `v4.14.0` pins the same Next.js 16.3.3
+and react-email 6.9.3 that `v4.13.1` was cut to deliver, so nothing was lost by moving forward.
 
 ## Changes (2026-08-25)
 
