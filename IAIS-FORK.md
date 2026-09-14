@@ -7,14 +7,12 @@ Public License v3.0 or later (see `LICENSE`); this fork is distributed under the
 
 ## Base
 
-Upstream tag `v4.14.0`.
-
-Rebased from `v4.13.1` on 2026-09-08 with
-`git rebase --onto v4.14.0 v4.13.1 iais`. A bare `git rebase v4.14.0` does not work here:
-`v4.13.1` was cut on a maintenance branch and is not an ancestor of `v4.14.0`, so a bare rebase
-replays upstream's own commits and conflicts in `pnpm-lock.yaml`. All four fork commits below
-replayed cleanly and every patched file landed intact; `v4.14.0` pins the same Next.js 16.3.3
-and react-email 6.9.3 that `v4.13.1` was cut to deliver, so nothing was lost by moving forward.
+Upstream tag `v4.15.1`.
+Rebased from `v4.14.0` on 2026-09-14 with
+`git rebase --onto v4.15.1 v4.14.0 upgrade-v4.15.1` in an isolated worktree.
+All six fork commits replayed without conflicts. The four source patches and IAIS
+assets remain unchanged. The release includes four database migrations; preserve
+a verified pre-upgrade database backup and the old image for rollback.
 
 ## Changes (2026-08-25)
 
@@ -30,6 +28,9 @@ and react-email 6.9.3 that `v4.13.1` was cut to deliver, so nothing was lost by 
 The link to this Corresponding Source (AGPL section 13) is shown on every poll page through
 the instance footer links (Control Panel, Settings), which upstream renders regardless of the
 attribution setting.
+
+CI also runs on pushes to `iais`, including unit, integration, type, and Docker
+smoke checks. Deploy only after the image build and applicable checks pass.
 
 ## Running it
 

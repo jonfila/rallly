@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - iais
   pull_request:
     branches:
       - main
