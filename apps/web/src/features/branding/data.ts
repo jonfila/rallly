@@ -51,7 +51,8 @@ export const getInstanceBrandingConfig = cache(async () => {
   }
   const license = await loadInstanceLicense();
   // IAIS fork: self-hosted instances always get custom branding.
-  const hasWhiteLabelAddon = isSelfHosted || (license?.whiteLabelAddon ?? false);
+  const hasWhiteLabelAddon =
+    isSelfHosted || (license?.whiteLabelAddon ?? false);
   return hasWhiteLabelAddon
     ? getCustomBrandingConfig()
     : getDefaultBrandingConfig();
