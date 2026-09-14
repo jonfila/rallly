@@ -2,9 +2,9 @@ import "server-only";
 
 import { cache } from "react";
 import { env } from "@/env";
-import { isSelfHosted } from "@/lib/constants";
 import { getInstanceSettings } from "@/features/instance-settings/data";
 import { loadInstanceLicense } from "@/features/licensing/data";
+import { isSelfHosted } from "@/lib/constants";
 import { DEFAULT_PRIMARY_COLOR } from "./constants";
 import { getCustomBrandingConfig } from "./data";
 import { getPrimaryColorVars } from "./utils";

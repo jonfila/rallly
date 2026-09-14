@@ -10,8 +10,9 @@ Public License v3.0 or later (see `LICENSE`); this fork is distributed under the
 Upstream tag `v4.15.1`.
 Rebased from `v4.14.0` on 2026-09-14 with
 `git rebase --onto v4.15.1 v4.14.0 upgrade-v4.15.1` in an isolated worktree.
-All six fork commits replayed without conflicts. The four source patches and IAIS
-assets remain unchanged. The release includes four database migrations; preserve
+All six fork commits replayed without conflicts. The four source patches retain
+the same behavior and IAIS assets remain unchanged; two branding files received
+formatting/import-order corrections required by CI. The release includes four database migrations; preserve
 a verified pre-upgrade database backup and the old image for rollback.
 
 ## Changes (2026-08-25)
