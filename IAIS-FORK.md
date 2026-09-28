@@ -7,13 +7,11 @@ Public License v3.0 or later (see `LICENSE`); this fork is distributed under the
 
 ## Base
 
-Upstream tag `v4.15.1`.
-Rebased from `v4.14.0` on 2026-09-14 with
-`git rebase --onto v4.15.1 v4.14.0 upgrade-v4.15.1` in an isolated worktree.
-All six fork commits replayed without conflicts. The four source patches retain
-the same behavior and IAIS assets remain unchanged; two branding files received
-formatting/import-order corrections required by CI. The release includes four database migrations; preserve
-a verified pre-upgrade database backup and the old image for rollback.
+Upstream tag `v4.15.2`.
+Rebased from `v4.15.1` on 2026-09-28 with `git rebase --onto v4.15.2 v4.15.1 iais`.
+All eight fork commits replayed without conflicts. v4.15.2 carries one upstream fix
+(registration no longer tied to email login, which only matters on SSO-only instances)
+and no database migrations. The pre-rebase branch is kept locally as `iais-pre-4.15.2`.
 
 ## Changes (2026-08-25)
 
