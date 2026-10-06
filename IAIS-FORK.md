@@ -7,11 +7,13 @@ Public License v3.0 or later (see `LICENSE`); this fork is distributed under the
 
 ## Base
 
-Upstream tag `v4.15.2`.
-Rebased from `v4.15.1` on 2026-09-28 with `git rebase --onto v4.15.2 v4.15.1 iais`.
-All eight fork commits replayed without conflicts. v4.15.2 carries one upstream fix
-(registration no longer tied to email login, which only matters on SSO-only instances)
-and no database migrations. The pre-rebase branch is kept locally as `iais-pre-4.15.2`.
+Upstream tag `v4.15.4`.
+Rebased from `v4.15.2` on 2026-10-06 with `git rebase --onto v4.15.4 v4.15.2 iais`.
+All ten fork commits replayed without conflicts, and the fork's diff against its base is
+unchanged. v4.15.3 resolves Alberta, British Columbia and Manitoba time zones after
+November 1, 2026 (one migration shifts stored Manitoba poll times) and links OIDC sign-ins
+to existing accounts by email. v4.15.4 upgrades Next.js to 16.3.8 for GHSA-vcvr-r3jv-pc5j
+(critical remote code execution through `/api/og-image-poll`).
 
 ## Changes (2026-08-25)
 
