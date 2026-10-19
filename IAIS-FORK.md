@@ -7,13 +7,11 @@ Public License v3.0 or later (see `LICENSE`); this fork is distributed under the
 
 ## Base
 
-Upstream tag `v4.15.4`.
-Rebased from `v4.15.2` on 2026-10-06 with `git rebase --onto v4.15.4 v4.15.2 iais`.
-All ten fork commits replayed without conflicts, and the fork's diff against its base is
-unchanged. v4.15.3 resolves Alberta, British Columbia and Manitoba time zones after
-November 1, 2026 (one migration shifts stored Manitoba poll times) and links OIDC sign-ins
-to existing accounts by email. v4.15.4 upgrades Next.js to 16.3.8 for GHSA-vcvr-r3jv-pc5j
-(critical remote code execution through `/api/og-image-poll`).
+Upstream tag `v4.15.5`.
+Rebased from `v4.15.4` on 2026-10-19 with `git rebase --onto v4.15.5 v4.15.4 iais`.
+All fork commits replayed without conflicts, and the fork's diff against its base is
+unchanged. v4.15.5 upgrades Next.js from 16.3.8 to 16.4.2 for GHSA-p3m5-59mp-jv5r (high,
+unauthenticated denial of service through Server Actions); nothing else changes.
 
 ## Changes (2026-08-25)
 
