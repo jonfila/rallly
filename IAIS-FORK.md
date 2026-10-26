@@ -7,11 +7,15 @@ Public License v3.0 or later (see `LICENSE`); this fork is distributed under the
 
 ## Base
 
-Upstream tag `v4.15.5`.
-Rebased from `v4.15.4` on 2026-10-19 with `git rebase --onto v4.15.5 v4.15.4 iais`.
-All fork commits replayed without conflicts, and the fork's diff against its base is
-unchanged. v4.15.5 upgrades Next.js from 16.3.8 to 16.4.2 for GHSA-p3m5-59mp-jv5r (high,
-unauthenticated denial of service through Server Actions); nothing else changes.
+Upstream tag `v4.16.3`.
+Rebased from `v4.15.5` on 2026-10-26 with `git rebase --onto v4.16.3 v4.15.5 iais`.
+One conflict: upstream rewrote `isApiAccessEnabled()` around a feature flag (`api`, off on
+self-hosted). The fork keeps its self-hosted owner check ahead of that flag, so key creation
+behaves as before; the settings sidebar link stays hidden on self-hosted, as it was under the
+old PostHog flag. The other fork commits replayed cleanly, and the Next.js bumps from v4.15.4
+and v4.15.5 are now part of the base. v4.16.0 adds 13 database migrations (additive) and
+video conferencing (off unless configured); v4.16.2 moves the image to Node.js 24.22.1 for
+CVE-2026-111497; v4.16.3 fixes poll times saved an hour off around daylight saving changes.
 
 ## Changes (2026-08-25)
 
