@@ -7,7 +7,7 @@ Public License v3.0 or later (see `LICENSE`); this fork is distributed under the
 
 ## Base
 
-Upstream tag `v4.16.3`.
+Upstream tag `v4.17.0`.
 Rebased from `v4.15.5` on 2026-10-26 with `git rebase --onto v4.16.3 v4.15.5 iais`.
 One conflict: upstream rewrote `isApiAccessEnabled()` around a feature flag (`api`, off on
 self-hosted). The fork keeps its self-hosted owner check ahead of that flag, so key creation
@@ -16,6 +16,10 @@ old PostHog flag. The other fork commits replayed cleanly, and the Next.js bumps
 and v4.15.5 are now part of the base. v4.16.0 adds 13 database migrations (additive) and
 video conferencing (off unless configured); v4.16.2 moves the image to Node.js 24.22.1 for
 CVE-2026-111497; v4.16.3 fixes poll times saved an hour off around daylight saving changes.
+Rebased from `v4.16.3` on 2026-11-16 with `git rebase --onto v4.17.0 v4.16.3 iais`: no conflicts,
+fork diff unchanged. v4.17.0 adds 2 migrations, per-visitor rate limits from `X-Real-IP` /
+`X-Forwarded-For` (`TRUSTED_PROXIES` only for multi-proxy chains), search, participant email on
+by default for new polls, and stops the public poll page sending respondents' emails.
 
 ## Changes (2026-08-25)
 
